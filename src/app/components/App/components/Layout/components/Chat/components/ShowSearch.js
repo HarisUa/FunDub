@@ -1,9 +1,9 @@
-const ShowSearch = ({ onShow, icon }) => (
+const ShowSearch = ({ onShow }) => (
   <button
     className="ui positive icon button"
     style={{margin: 5}}
     onClick={onShow}>
-    <i className={icon + ' icon'}></i>
+    <i className="list icon"></i>
   </button>
 )
 

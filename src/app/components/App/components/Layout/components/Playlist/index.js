@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { sendAction, toggleSearch } from 'actions'
+import { sendAction, toggleSearch, toggleList } from 'actions'
 
 import { ColumnContainer, ColumnMain } from 'components/ColumnLayout'
 import { RowContainer } from 'components/RowLayout'
@@ -17,6 +17,7 @@ class Playlist extends Component {
       currentPlayingVideoId,
       isConnected,
       toggleSearch,
+      toggleList,
       onSelect,
       onDelete,
     } = this.props
@@ -25,7 +26,10 @@ class Playlist extends Component {
       <ColumnContainer>
         <RowContainer>
           <Header/>
-          <ShowSearch onShow={toggleSearch} />
+          <RowContainer>
+            <ShowSearch onShow={toggleSearch} icon='add'/>
+            <ShowSearch onShow={toggleList} icon='chat'/>
+          </RowContainer>
         </RowContainer>
         <ColumnMain>
           {
@@ -59,6 +63,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     toggleSearch: () => dispatch(toggleSearch()),
+    toggleList: () => dispatch(toggleList()),
     onSelect: videoId => dispatch(sendAction('PLAY', videoId)),
     onDelete: index => dispatch(sendAction('DELETE_VIDEO', index)),
   }
