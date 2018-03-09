@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import Search from './components/Search'
 import Player from './components/Player'
 import Playlist from './components/Playlist'
+import Chat from './components/Chat'
 
 const containerStyle = {
   display: 'flex',
@@ -25,7 +26,7 @@ const itemStyle = Object.assign({
   minWidth: 500,
 }, style)
 
-const Layout = ({ showSidebar, showSearch }) => (
+const Layout = ({ showSidebar, showSearch, showList }) => (
   <div style={containerStyle}>
     <div style={style}>
       <Player/>
@@ -34,9 +35,9 @@ const Layout = ({ showSidebar, showSearch }) => (
       showSidebar ?
         <div style={itemStyle}>
           {
-            showSearch ?
-              <Search/> :
-              <Playlist/>
+            showSearch ? <Search/> :
+              showList ? <Playlist/> :
+                <Chat/>
           }
         </div> :
         null
@@ -48,6 +49,7 @@ const mapStateToProps = state => {
   return {
     showSidebar: state.showSidebar,
     showSearch: state.showSearch,
+    showList: state.showList,
   }
 }
 

@@ -58,6 +58,15 @@ export function showSearch(state = false, action) {
   }
 }
 
+export function showList(state = false, action) {
+  switch (action.type) {
+    case 'TOGGLE_LIST':
+      return !state
+    default:
+      return state
+  }
+}
+
 export function isSearching(state = false, action) {
   switch (action.type) {
     case 'SEARCH':
@@ -109,6 +118,7 @@ export function isSendingMap(state = Map(), action) {
   const actionArray = [
     'USERNAME',
     'ADD_VIDEO',
+    'NEW_MESSAGE',
     'DELETE_VIDEO',
     'PLAY',
     'PLAY_NEXT',
@@ -144,15 +154,18 @@ const defaultRoomState = Map({
   room: '',
   numberOfUsers: 0,
   playlist: List(),
+  chatMessages: List()
 })
+
 export function roomState(state = defaultRoomState, action) {
   switch (action.type) {
     case 'SET_ROOM_STATE':
-      const { room, numberOfUsers, playlist } = action.data
+      const { room, numberOfUsers, playlist, chatMessages} = action.data
       return Map({
         name: room,
         numberOfUsers,
-        playlist: List(playlist)
+        playlist: List(playlist),
+        chatMessages: List(chatMessages)
       })
     case 'INCREMENT_USER_NUMBER':
       return state.set('numberOfUsers',
@@ -166,6 +179,9 @@ export function roomState(state = defaultRoomState, action) {
     case 'DELETE_VIDEO':
       return state.set('playlist',
         state.get('playlist').delete(action.index))
+    case 'NEW_MESSAGE':
+      return state.set('chatMessages',
+        state.get('chatMessages').push(action.msg))
     default:
       return state
   }

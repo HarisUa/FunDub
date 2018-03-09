@@ -104,6 +104,10 @@ export function setUpSocket() {
       }))
     })
 
+    socket.on('new message', msg => {
+      dispatch({ type: 'NEW_MESSAGE', msg })
+    })
+
     socket.on('lost user', msg => {
       dispatch({ type: 'DECREMENT_USER_NUMBER' })
       dispatch(notify({
@@ -154,6 +158,16 @@ export function sendAction(action, data) {
     if (socket.connected) {
       dispatch({ type: `SEND_${action}` })
       socket.emit('action', { type: action, data })
+    }
+  }
+}
+
+export function sendMessage(data) {
+  return (dispatch, getState) => {
+    const { socket } = getState()
+
+    if (socket.connected) {
+      socket.emit('send message', data)
     }
   }
 }
@@ -240,6 +254,10 @@ export function toggleSidebar() {
 
 export function toggleSearch() {
   return { type: 'TOGGLE_SEARCH' }
+}
+
+export function toggleList() {
+  return { type: 'TOGGLE_LIST' }
 }
 
 export function setNotificationSystem(ns) {

@@ -61,6 +61,17 @@ io.on('connection', socket => {
     })
   })
 
+  socket.on('send message', data => {
+
+    let messasgeData = {
+      user: username,
+      message: data,
+    }
+
+    console.log(`Message from ${username} to chanel ${room}: ${data}`)
+    io.in(room).emit('new message', messasgeData);
+  })
+
   socket.on('action', msg => {
     io.in(room).emit('action', msg)
 
