@@ -4,10 +4,11 @@ Synchronized player for one-time video viewing.
 
 DEMO: https://fundub.herokuapp.com
 
+
 ## Installation
 
-```bash
 git clone https://github.com/HarisUa/FunDub.git
+
 cd FunDub
 npm install
 npm start
