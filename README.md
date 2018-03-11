@@ -2,7 +2,7 @@
 
 Synchronized player for one-time video viewing.
 
-`DEMO: https://fundub.herokuapp.com`
+DEMO: https://fundub.herokuapp.com
 
 DEMO: https://fundub.herokuapp.com
 
