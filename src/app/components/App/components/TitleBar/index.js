@@ -12,6 +12,20 @@ import Connecting from './components/Connecting'
 import ToggleSidebarButton from './components/ToggleSidebarButton'
 
 class TitleBar extends Component {
+
+  getPlayingTitleFromPlaylist(playlist, currentPlayingVideoId) {
+
+    const playing = playlist.filter(element => element.id.videoId == currentPlayingVideoId)
+
+    const result = { value : '' }
+
+    playing.map(function (element) {
+        result.value = element.snippet.title
+    })
+
+    return result.value
+  }
+
   render() {
     const {
       isConnected,
@@ -20,12 +34,14 @@ class TitleBar extends Component {
       username,
       showSidebar,
       toggleSidebar,
+      currentPlayingVideoId,
+      playlist
     } = this.props
 
     return (
       <RowContainer>
         <RowContainer>
-          <Brand/>
+          <Brand playingTitle={this.getPlayingTitleFromPlaylist(playlist, currentPlayingVideoId)} />
           <UserNumber number={numberOfUsers} />
           <SecretTag username={roomName} />
         </RowContainer>
@@ -48,6 +64,8 @@ const mapStateToProps = state => {
     roomName: state.roomState.get('name'),
     username: state.username,
     showSidebar: state.showSidebar,
+    currentPlayingVideoId: state.playerState.get('videoId'),
+    playlist: state.roomState.get('playlist'),
   }
 }
 
