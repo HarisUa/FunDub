@@ -1,9 +1,11 @@
 import { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
 import YouTube from 'react-youtube'
+import { sendAction } from 'actions'
 
 import PlayerOverlay from './components/PlayerOverlay'
 
-export default class YoutubePlayer extends Component {
+class YoutubePlayer extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -28,6 +30,7 @@ export default class YoutubePlayer extends Component {
     const {
       setPlayer,
       videoId,
+      onPause
     } = this.props
     const { width } = this.state
     const height = width === 1280 ? 720 : 480
@@ -43,7 +46,9 @@ export default class YoutubePlayer extends Component {
       height,
       width,
       playerVars: {
-        autoplay: 1
+        autoplay: 1,
+        showinfo: 0,
+        controls: 0
       }
     }
 
@@ -52,7 +57,7 @@ export default class YoutubePlayer extends Component {
         <YouTube
           videoId={videoId}
           opts={opts}
-          onReady={e => setPlayer(e.target)} />
+          onReady={e => setPlayer(e.target)} onEnd={this.props.onNext}/>
         {videoId ? null : <PlayerOverlay/>}
       </div>
     )
@@ -69,3 +74,13 @@ YoutubePlayer.propTypes = {
 function getPlayerWidth() {
   return window.innerWidth > 1800 ? 1280 : 853
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onNext: () => dispatch(sendAction('PLAY_NEXT')),
+    }
+}
+
+const C = connect(null, mapDispatchToProps)(YoutubePlayer)
+
+export default C
