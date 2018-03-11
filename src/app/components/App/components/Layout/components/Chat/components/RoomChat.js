@@ -47,7 +47,6 @@ export default class RoomChat extends Component {
             <div className="ui left icon input">
               <input
                 ref="input"
-                name="user"
                 type="text"
                 placeholder="Enter message..."
                 onChange={this._handleChange} />
