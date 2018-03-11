@@ -101,7 +101,7 @@ io.on('connection', socket => {
   })
 })
 
-const PORT = 3000
+const PORT = 5000
 http.listen(PORT, err => {
   if (err) {
     console.log(err)
