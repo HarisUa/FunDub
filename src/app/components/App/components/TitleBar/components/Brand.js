@@ -1,10 +1,10 @@
-const Brand = () => (
+const Brand = (props) => (
   <h2
     className="ui header"
     style={{margin: 0}}>
     <i className="youtube icon"></i>
     <div className="content">
-      Watch YouTube Together! 🙌 😁
+        {props.playingTitle?props.playingTitle:''} 🙌 😁
       <div className="sub header">
         <i className="code icon"></i> with <i className="heart icon"></i> by
         <a
