@@ -26,6 +26,8 @@ function updateData(room, field, data) {
 //////////////////////////////////////////////
 
 const app = express()
+app.use(express.static('public'))
+
 const http = Server(app)
 const io = SocketIO(http)
 

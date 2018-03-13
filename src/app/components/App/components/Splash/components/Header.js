@@ -1,6 +1,6 @@
 const Header = () => (
   <h2 className="ui center aligned icon header">
-    <img src={"https://www.kissfm.ua/static/img/kiss_korona_animation_white.gif"} />
+    <img src="/img/music-animation.gif" />
     <i className="youtube play icon"></i>
     <div className="content">
       Watch YouTube Together!
