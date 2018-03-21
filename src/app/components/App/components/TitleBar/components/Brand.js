@@ -8,9 +8,13 @@ const Brand = (props) => (
       <div className="sub header">
         <i className="code icon"></i> with <i className="heart icon"></i> by
         <a
-          style={{marginLeft: 5}}>
+          style={{marginLeft: 5}} href={'https://github.com/HarisUa'}>
           Haris
-        </a>
+        </a> and
+          <a
+              style={{marginLeft: 5}} href={'https://github.com/antydemant'}>
+              Ostapchuk
+          </a>
       </div>
     </div>
   </h2>
