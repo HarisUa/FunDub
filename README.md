@@ -6,7 +6,7 @@ DEMO: https://fundub.herokuapp.com
 
 
 ## Installation
-
+```
 git clone https://github.com/HarisUa/FunDub.git
 
 cd FunDub
