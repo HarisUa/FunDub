@@ -12,8 +12,21 @@ import RoomChat from './components/RoomChat'
 const nameStyle = {
   color: 'red'
 }
-
+  
 class Chat extends Component {
+  
+  scrollToBottom() {
+	const { messageList } = this.refs;
+	const scrollHeight = messageList.scrollHeight;
+	const height = messageList.clientHeight;
+	const maxScrollTop = scrollHeight - height;
+	messageList.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+  }
+  
+  componentDidUpdate() {
+	  this.scrollToBottom();
+  }
+  
   render() {
 
     this.state = {
@@ -37,7 +50,7 @@ class Chat extends Component {
           <Header />
           <ShowSearch onShow={toggleList} />
         </RowContainer>
-        <div style={chatStyle}>
+        <div style={chatStyle} ref="messageList">
           {chatMessages.size === 0 ? 
             <p> Empty... </p> :
             chatMessages.map((data, index) => 
