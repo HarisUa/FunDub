@@ -150,6 +150,15 @@ export function username(state = '', action) {
   }
 }
 
+export function adminChecked(state = '', action) {
+  switch (action.type) {
+    case 'ADM_CHECK':
+      return action.admin = true
+    default:
+      return state
+  }
+}
+
 const defaultRoomState = Map({
   room: '',
   numberOfUsers: 0,
@@ -194,10 +203,11 @@ const defaultPlayerState = Map({
 export function playerState(state = defaultPlayerState, action) {
   switch (action.type) {
     case 'PLAY':
-      const { videoId } = action
+      let { videoId } = action
+      if (typeof videoId === 'object') videoId = videoId.id.videoId
       return state.set('videoId', videoId).set('isPlaying', videoId ? true : false)
     case 'PLAY_NEXT':
-      return state.set('videoId', action.nextVideoId)
+      return state.set('videoId', action.nextVideoId.id.videoId)
     case 'PLAY_PREVIOUS':
       return state.set('videoId', action.previousVideoId)
     case 'PAUSE':

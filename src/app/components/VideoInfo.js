@@ -24,6 +24,16 @@ const titleStyle = {
   color: '#215BE8',
 }
 
+const liveStyle = {
+    color: 'hsl(3, 81.8%, 49.6%)',
+    border: '1px solid hsl(3, 81.8%, 49.6%)',
+    borderRadius: '2px',
+}
+
+const linkStyle = {
+    color: 'black',
+}
+
 export default class VideoInfo extends Component {
   render() {
     const { data } = this.props
@@ -39,9 +49,32 @@ export default class VideoInfo extends Component {
         </div>
         <div>
           <div style={titleStyle}>{snippet.title}</div>
-          <small>Uploaded by <strong>{snippet.channelTitle}</strong></small>
+            {
+              snippet.liveBroadcastContent == "live" ?
+                <span>
+                  <small>Streaming by
+                    <strong>
+                      <a href={'https://www.youtube.com/channel/'+snippet.channelId} target={'_blank'}> {snippet.channelTitle} </a>
+                    </strong>
+                  </small>
+                  <br/>
+                  <span style={liveStyle}>LIVE STREAM</span>
+                  <br/>
+                  <small>Announced <TimeAgo date={snippet.publishedAt} /></small>
+                </span>
+                  :
+                <span>
+                  <small>Uploaded by
+                    <strong>
+                      <a href={'https://www.youtube.com/channel/'+snippet.channelId} target={'_blank'} style={linkStyle}> {snippet.channelTitle} </a>
+                    </strong>
+                  </small>
+                  <br/>
+                  <small>Published <TimeAgo date={snippet.publishedAt} /></small>
+                </span>
+            }
           <br/>
-          <small>Published <TimeAgo date={snippet.publishedAt} /></small>
+
         </div>
       </div>
     )

@@ -1,8 +1,8 @@
 import { Component, PropTypes } from 'react'
-import GitHubForkRibbon from 'react-github-fork-ribbon'
-
 import Header from './components/Header'
-import ErrorMessage from './components/ErrorMessage'
+import Rooms from './components/Rooms'
+import Create from './components/Create'
+import GoogleLogin from 'react-google-login'
 
 const containerStyle = {
   position: 'fixed',
@@ -20,6 +20,20 @@ const segmentStyle = {
   minWidth: 400
 }
 
+const loginStyle = {
+    width: '370px',
+    display: 'inline-block',
+    background: 'rgb(209, 72, 54)',
+    color: 'rgb(255, 255, 255)',
+    paddingTop: '10px',
+    paddingBottom: '10px',
+    borderRadius: '2px',
+    border: '1px solid transparent',
+    fontSize: '21px',
+    fontWeight: 'bold',
+    fontFamily: 'Roboto',
+}
+
 export default class Splash extends Component {
   constructor(props) {
     super(props)
@@ -32,7 +46,7 @@ export default class Splash extends Component {
 
     this._handleUserChange = this._handleUserChange.bind(this)
     this._handleRoomChange = this._handleRoomChange.bind(this)
-    this._handleSubmit = this._handleSubmit.bind(this)
+    this._responseGoogle = this._responseGoogle.bind(this)
   }
 
   _handleUserChange(user) {
@@ -43,14 +57,24 @@ export default class Splash extends Component {
   }
 
   _handleRoomChange(room) {
-    this.setState({ room: room.target.value }); 
+    this.setState({ room }); 
+    this.props.onSubmit(this.state.username, room);
   }
 
-  _handleSubmit(e) {
-    e.preventDefault();
-    (!this.state.username) ? this.setState({ errorName: true }) :
-    (!this.state.room) ? this.props.onSubmit(this.state.username) :
-      this.props.onSubmit(this.state.username, this.state.room);
+  _responseGoogle(e) {
+    if(!e.profileObj.name) {
+      this.setState({ errorName: true })
+    } else {
+      if(!this.state.room) {
+        //this.props.onSubmit(e.profileObj.name)
+        this.setState({ username: e.profileObj.name });
+        this.setState({ errorName: false });
+      } else {
+        //this.props.onSubmit(e.profileObj.name, this.state.room);
+        this.setState({ username: e.profileObj.name });
+        this.setState({ errorName: false });
+      }
+    }
   }
 
   render() {
@@ -58,7 +82,7 @@ export default class Splash extends Component {
       'ui large loading form' :
       'ui large form'
 
-    const { errorName, errorRoom } = this.state
+    const { errorName, errorRoom, username} = this.state
     const fieldCN = errorName ?
       'field error' :
       'field'
@@ -67,44 +91,33 @@ export default class Splash extends Component {
       'field error' :
       'field'
 
-    return (
+    const content = username ?
+      <div>
+        <Create onSubmit={this._handleRoomChange} /> 
+        <Rooms onSubmit={this._handleRoomChange} /> 
+      </div> :
       <div style={containerStyle}>
         <div style={segmentStyle}>
           <div className="ui segment">
             <Header/>
-            <form
-              className={formCN}
-              onSubmit={this._handleSubmit}>
-              <div className={fieldCN}>
-                <div className="ui left icon input">
-                  <input
-                    ref="input"
-                    name="user"
-                    type="text"
-                    placeholder="Enter user name..."
-                    onChange={this._handleUserChange} />
-                  <i className="user icon"></i>
-                </div>
-              </div>
-              <div className={fieldRoom}>
-                <div className="ui left icon input">
-                  <input
-                    ref="input"
-                    name="room"
-                    type="text"
-                    placeholder="Enter room name..."
-                    onChange={this._handleRoomChange} />
-                  <i className="ticket icon"></i>
-                </div>
-              </div>
-              <button
-                className="ui fluid large teal submit button"
-                type="submit">
-                OK
-              </button>
-            </form>
+            <div
+              className={formCN}>
+              <GoogleLogin
+                  clientId={'995736415176-i302e266c5arvdeg04sjdvmsft85lbin.apps.googleusercontent.com'}
+                  onSuccess={this._responseGoogle}
+                  onFailure={this._responseGoogle}
+                  style={loginStyle}
+              >
+                <i className="youtube icon"></i> 
+                <span> Login With Google </span>
+              </GoogleLogin>
+            </div>
           </div>
         </div>
+      </div>
+    return (
+      <div>
+        { content }
       </div>
     )
   }

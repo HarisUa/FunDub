@@ -124,6 +124,30 @@ export function setUpSocket() {
       }))
       dispatch(pause())
     })
+
+    socket.on('banned', bool => {
+      dispatch(notify({
+            message: 'You Have Been Banned!',
+            level: 'error',
+          }))
+    })
+
+    socket.on('adminChecked', bool => {
+
+      if (bool) {
+        dispatch(notify({
+            message: 'Admin Checked Success!',
+            level: 'success',
+          }))
+
+        dispatch({ type: 'ADM_CHECK' })
+      }
+      else
+        dispatch(notify({
+            message: 'Admin Checked Error!',
+            level: 'error',
+          }))
+    })
   }
 }
 
@@ -147,6 +171,23 @@ export function sendUsername(username, roomName = 'defaultRoom') {
     if (socket.connected) {
       dispatch({ type: 'SEND_USERNAME', username })
       socket.emit('new user', data)
+    }
+  }
+}
+
+export function checkUserid(userid) {
+  return (dispatch, getState) => {
+    const { socket } = getState()
+
+    let data = {
+      id: userid
+    }
+
+    //console.log(data);
+
+    if (socket.connected) {
+      //dispatch({ type: 'SEND_USERNAME', userid })
+      socket.emit('checkId', data)
     }
   }
 }
@@ -220,6 +261,7 @@ function playNext() {
       roomState.get('playlist'),
       playerState.get('videoId')
     )
+    dispatch(sendAction('PLAY', nextVideoId ))
     dispatch({ type: 'PLAY_NEXT', nextVideoId })
   }
 }
@@ -231,6 +273,7 @@ function playPrevious() {
       roomState.get('playlist'),
       playerState.get('videoId')
     )
+    dispatch(sendAction('PLAY', previousVideoId ))
     dispatch({ type: 'PLAY_PREVIOUS', previousVideoId })
   }
 }
@@ -258,6 +301,10 @@ export function toggleSearch() {
 
 export function toggleList() {
   return { type: 'TOGGLE_LIST' }
+}
+
+export function roomList() {
+  return { type: 'ROOM_LIST' }
 }
 
 export function setNotificationSystem(ns) {

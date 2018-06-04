@@ -37,7 +37,6 @@ const App = ({ roomName, isSendingUsername, sendUsername, setNotificationSystem 
     <Splash
       isSendingUsername={isSendingUsername}
       onSubmit={sendUsername} />
-
   return (
     <div>
       { content }
